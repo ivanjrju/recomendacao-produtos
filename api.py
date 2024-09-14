@@ -4,8 +4,10 @@ import ofertas
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return "Hello, World!"
 
-# Rota com variável de caminho
 @app.route('/recomendar/produtos/<cliente>', methods=['GET'])
 def recomendar_produtos(cliente):
     lista = []
