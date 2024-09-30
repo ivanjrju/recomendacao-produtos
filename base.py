@@ -13,10 +13,11 @@ def similaridade(distancia):
     return sim
 
 def obter_similares(cliente_id):
-    colunas = ['salario_ano','casa_propria','carro','scode_credito']
+    colunas = ['salario_ano','casa_propria','carro','scode_credito','grupo']
     usuario1 = df.loc[df['cliente'] == cliente_id].iloc[0][colunas]
     resultados = []
-    for index, row in df.iterrows():
+    df_group = df[df['grupo'] == usuario1['grupo']]
+    for index, row in df_group.iterrows():
         if row['cliente'] != cliente_id:
             usuario2 = row[colunas]
             distancia = distancia_euclidiana(usuario1, usuario2)
@@ -25,6 +26,7 @@ def obter_similares(cliente_id):
                 'cliente_comparado': row['cliente'],
                 'similaridade': sim
             })
+    print(len(df_group))
     df_temp = pd.DataFrame(resultados)
     df_temp = df_temp.sort_values(by='similaridade', ascending=False)
     return json.loads(df_temp[:3].to_json())
